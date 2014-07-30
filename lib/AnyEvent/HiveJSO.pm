@@ -3,7 +3,7 @@ BEGIN {
   $AnyEvent::HiveJSO::AUTHORITY = 'cpan:GETTY';
 }
 # ABSTRACT: HiveJSO stream serializer/deserializer for AnyEvent
-$AnyEvent::HiveJSO::VERSION = '0.001';
+$AnyEvent::HiveJSO::VERSION = '0.002';
 use strict;
 use warnings;
 
@@ -51,7 +51,40 @@ AnyEvent::HiveJSO - HiveJSO stream serializer/deserializer for AnyEvent
 
 =head1 VERSION
 
-version 0.001
+version 0.002
+
+=head1 SYNOPSIS
+
+  # $uart is an AnyEvent::Handle object
+  $uart->on_read(sub {
+    my ( $uart ) = @_;
+    $uart->push_read(hivejso => sub {
+      my ( $uart, $data ) = @_;
+      if (ref $data eq 'HiveJSO::Error') {
+        p($data->error);   # get error, a real communication error happened
+        p($data->garbage); # get the data which was producing the error
+      } else {
+        isa_ok($ref,'HiveJSO'); # else its a HiveJSO object  
+      }
+    });
+  });
+
+=head1 DESCRIPTION
+
+=head1 SUPPORT
+
+IRC
+
+  Join #hardware on irc.perl.org. Highlight Getty for fast reaction :).
+
+Repository
+
+  http://github.com/homehivelab/p5-anyevent-hivejso
+  Pull request and additional contributors are welcome
+
+Issue Tracker
+
+  http://github.com/homehivelab/p5-anyevent-hivejso/issues
 
 =head1 AUTHOR
 
